@@ -1,7 +1,16 @@
+# UNIVERSIDADE FEDERAL DO RIO GRANDE DO NORTE
+# DEPARTAMENTO DE ENGENHARIA DE COMPUTACAO E AUTOMACAO
+# DISCIPLINA REDES DE COMPUTADORES (DCA0113)
+# AUTOR: TALES JOABE LIMA DA COSTA
+#
+# SCRIPT:
+#
+
 # importacao das bibliotecas
 from socket import * # sockets
 
 # definicao das variaveis
+lista = []
 serverName = '' # ip do servidor (em branco)
 serverPort = 65000 # porta a se conectar
 serverSocket = socket(AF_INET,SOCK_STREAM) # criacao do socket TCP
@@ -11,10 +20,12 @@ print ('Servidor TCP esperando conexoes na porta %d ...' % (serverPort))
 
 while True:
   connectionSocket, addr = serverSocket.accept() # aceita as conexoes dos clientes
-  sentence = connectionSocket.recv(1024) # recebe dados do cliente
-  sentence = sentence.decode('utf-8')
-  capitalizedSentence = sentence.upper() # converte em letras maiusculas
-  print ('Cliente %s enviou: %s, transformando em: %s' % (addr, sentence, capitalizedSentence))
+  username = connectionSocket.recv(1024) # recebe dados do cliente
+  username = username.decode('utf-8')
+
+  lista.append(username)
+
+  print ('Username: %, IP: %s, Porta: %s' % (username, connectionSocket, addr))
   connectionSocket.send(capitalizedSentence.encode('utf-8')) # envia para o cliente o texto transformado
   connectionSocket.close() # encerra o socket com o cliente
 serverSocket.close() # encerra o socket do servidor
