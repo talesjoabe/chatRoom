@@ -8,24 +8,25 @@
 
 # importacao das bibliotecas
 from socket import * # sockets
+from functions import *
 
 # definicao das variaveis
 lista = []
 serverName = '' # ip do servidor (em branco)
-serverPort = 65000 # porta a se conectar
+serverPort = 64000 # porta a se conectar
 serverSocket = socket(AF_INET,SOCK_STREAM) # criacao do socket TCP
 serverSocket.bind((serverName,serverPort)) # bind do ip do servidor com a porta
 serverSocket.listen(1) # socket pronto para 'ouvir' conexoes
 print ('Servidor TCP esperando conexoes na porta %d ...' % (serverPort))
-
+clients = []
 while True:
   connectionSocket, addr = serverSocket.accept() # aceita as conexoes dos clientes
   username = connectionSocket.recv(1024) # recebe dados do cliente
-  username = username.decode('utf-8')
+  username = str(username).encode('utf-8')
 
-  lista.append(username)
+  connectionSocket.send(username)
+  addList(clients,username, addr[0], addr[1])
 
-  print ('Username: %, IP: %s, Porta: %s' % (username, connectionSocket, addr))
-  connectionSocket.send(capitalizedSentence.encode('utf-8')) # envia para o cliente o texto transformado
+  #connectionSocket.send(capitalizedSentence.encode('utf-8')) # envia para o cliente o texto transformado
   connectionSocket.close() # encerra o socket com o cliente
 serverSocket.close() # encerra o socket do servidor
