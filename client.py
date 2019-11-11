@@ -16,17 +16,28 @@ from functions import *
 # define uma classe para a criacao de threads
 class myThread (threading.Thread):
     # redefine a funcao __init__ para aceitar a passagem parametros de entrada
-    def __init__(self, username, serverName, serverPort):
+    def __init__(self, username, serverName, serverPort, clientSocket):
         threading.Thread.__init__(self)
         self.username = username
-        self.clientSocket = socket(AF_INET,SOCK_STREAM) # criacao do socket TCP
-        self.clientSocket.connect((serverName, serverPort)) # conecta o socket ao servidor
-        self.clientSocket.send(username.encode('utf-8')) # envia o nickname para o servidor
+        self.serverName = serverName
+        self.serverPort = serverPort
+        self.clientSocket = clientSocket
 
     # a funcao run() e executada por padrao por cada thread
     def run(self):
-        #Mostrar que está conectado
-        clientOn(self.clientSocket.recv(1024));
-        
-
-        self.clientSocket.close()
+        while True:
+            mensagem = self.clientSocket.recv(1024).decode('utf-8')
+            if(len(mensagem)!=0):
+                if(mensagem[0]=='1'):
+                    if(mensagem[1:] != self.username):
+                        print(colored(mensagem[1:], 'green'), "entrou na sala")
+                    else:
+                        print(colored("você", 'green'), "entrou na sala")
+                elif(mensagem[0]=='2'):
+                    if(mensagem[1:] != self.username):
+                        print(colored(mensagem[1:], 'red'), "saiu da sala")
+                    else:
+                        print(colored("você", 'green'), "saiu na sala")
+            else:
+                mensagem = input("Digite: ")
+                

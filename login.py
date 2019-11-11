@@ -11,9 +11,16 @@ from socket import *
 from client import *
 
 # definicao das variaveis
+username= ''
 serverName = '' # ip do servidor
-serverPort = 64000 # porta a se conectar
+serverPort = 63200 # porta a se conectar
 
-username = input('Username: ')
+clientSocket = socket(AF_INET,SOCK_STREAM) # criacao do socket TCP
+clientSocket.connect((serverName, serverPort)) # conecta o socket ao servidor
 
-myThread(username, serverName, serverPort).start()
+# O TAMANHO DO NICKNAME É RESTRITO A 16 OCTETOS
+while len(username)==0 || len(s.encode('utf-8')) <=16:
+    username = input('Username: ')
+
+clientSocket.send(username.encode('utf-8'))
+myThread(username, serverName, serverPort, clientSocket).start()
