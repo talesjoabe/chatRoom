@@ -8,11 +8,8 @@
 # Print when Client enter on the chatRoom
 def clientOn(username):
     userOn= username.decode('utf-8')[2:len(username)-1]
-    return '1'+userOn
-
-def clientOff(username):
-    userOn= username.decode('utf-8')[2:len(username)-1]
-    return '2'+userOff
+    return '1'+'\0'+userOn
+    #return '1'+userOn
 
 # Add ClientInfo in list
 def addListClient(clients,username, ip, port):
@@ -27,14 +24,34 @@ def remListClient(clients,username,ip,port):
 
 def addListSockets(listSockets, Socket):
     listSockets.append(Socket)
-    print(listSockets)
 
-def remListSockets(listSockets, Socket):
-    listSockets.pop(Socket)
+def remListSockets(listSockets, indiceSocket):
+    listSockets.pop(indiceSocket)
 
 def protocoloComunicacao(tam, nickname, comando, dados):
-    if(tam<100 and len(nickname.encode('utf-8'))<=16 and len(comando.encode('utf-8')<=8)):
-        s= str(tam)+'\0'+nickname+'\0'+comando+'\0'+dados+'\0'
+    if(tam<100 and len(nickname.encode('utf-8'))<=16 and len(comando.encode('utf-8'))<=25):
+        s= str(tam)+'\0'+nickname+'\0'+comando+'\0'+str(dados)
         return s
     else:
         return '-1'
+
+def comandos(protocolo):
+    protocolo = protocolo.split('\0')
+    tam = protocolo[0]
+    nickname = protocolo[1]
+    comando = protocolo[2]
+    dados = protocolo[3]
+    #print(dados)
+    indiceClient=0
+
+    if(comando == 'entrar()'):
+        return '1'+'\0'+nickname
+    if(comando == 'sair()'):
+        return '2'+'\0'+nickname
+    elif(comando == 'lista()'):
+        return '3'+'\0'+nickname+'\0'+str(dados)
+    elif(comando == 'mensagem()'):
+        return '4'+'\0'+nickname+'\0'+dados
+    else:
+        # (5) + REMETENTE + DESTINATARIO + MSG
+        return '5'+'\0'+nickname+'\0'+comando[8:len(comando)]+'\0'+dados
