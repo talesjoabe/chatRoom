@@ -15,7 +15,7 @@ from threadClientReceberDados import *
 # definicao das variaveis
 username= ''
 serverName = '' # ip do servidor
-serverPort = 63000 # porta a se conectar
+serverPort = 63420 # porta a se conectar
 
 clientSocket = socket(AF_INET,SOCK_STREAM) # criacao do socket TCP
 clientSocket.connect((serverName, serverPort)) # conecta o socket ao servidor

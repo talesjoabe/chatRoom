@@ -10,20 +10,18 @@
 from socket import * # sockets
 from functions import *
 from threadServidorRecebeDados import *
-
-
-def sair():
-    clientSocket.close() # encerramento o socket do cliente
+from threadServidorComandos import *
 
 # definicao das variaveis
 serverName = '' # ip do servidor (em branco)
-serverPort = 63000# porta a se conectar
+serverPort = 63420# porta a se conectar
 serverSocket = socket(AF_INET,SOCK_STREAM) # criacao do socket TCP
 serverSocket.bind((serverName,serverPort)) # bind do ip do servidor com a porta
 serverSocket.listen(1) # socket pronto para 'ouvir' conexoes
 print ('Servidor TCP esperando conexoes na porta %d ...' % (serverPort))
 clients = []
 listaSockets = []
+
 while True:
       connectionSocket, addr = serverSocket.accept() # aceita as conexoes dos clientes
       addListSockets(listaSockets, connectionSocket)
@@ -38,4 +36,5 @@ while True:
       for client in range(len(listaSockets)):
               listaSockets[client].send(protocolo.encode('utf-8'))
 
+      threadServidorComandos(clients, listaSockets, serverSocket).start()
       threadServidorRecebeDados(clients, username, listaSockets, connectionSocket, addr[0],addr[1]).start()
