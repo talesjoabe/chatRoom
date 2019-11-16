@@ -15,10 +15,11 @@ from threadClientReceberDados import *
 # definicao das variaveis
 username= ''
 serverName = '' # ip do servidor
-serverPort = 63420 # porta a se conectar
+serverPort = 63427 # porta a se conectar
 
 clientSocket = socket(AF_INET,SOCK_STREAM) # criacao do socket TCP
 clientSocket.connect((serverName, serverPort)) # conecta o socket ao servidor
+
 
 # O TAMANHO DO NICKNAME É RESTRITO A 16 OCTETOS
 while len(username)==0 and len(username.encode('utf-8')) <=16:

@@ -23,6 +23,7 @@ class threadClientReceberDados (threading.Thread):
         self.serverName = serverName
         self.serverPort = serverPort
         self.clientSocket = clientSocket
+        self._kill = threading.Event()
         #self.kill = threading.Event()
 
     # a funcao run() e executada por padrao por cada thread
@@ -50,7 +51,7 @@ class threadClientReceberDados (threading.Thread):
                     else:
                         print(colored("você", 'red'), "saiu da sala")
                         self.clientSocket.close()
-                        exit()
+                        self._kill.set()
                 elif(mensagem[0]=='3'):
                     print(mensagem[2])
                 elif(mensagem[0]=='4'):

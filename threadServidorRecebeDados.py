@@ -16,7 +16,7 @@ from functions import *
 # define uma classe para a criacao de threads
 class threadServidorRecebeDados (threading.Thread):
     # redefine a funcao __init__ para aceitar a passagem parametros de entrada
-    def __init__(self, clients, username, listaSockets, connectionSocket, ip, port):
+    def __init__(self, clients, username, listaSockets, connectionSocket, ip, port,usernameList):
         threading.Thread.__init__(self)
         self.clients = clients
         self.username = username
@@ -24,6 +24,7 @@ class threadServidorRecebeDados (threading.Thread):
         self.connectionSocket = connectionSocket
         self.ip= ip
         self.port= port
+        self.usernameList= usernameList
 
     # a funcao run() e executada por padrao por cada thread
     def run(self):
@@ -48,5 +49,6 @@ class threadServidorRecebeDados (threading.Thread):
                             print(self.clients[i][0]+" desconectou-se")
                             del self.clients[i]
                             del self.listaSockets[i]
+                            del self.usernameList[i]
                             #print(self.clients,self.listaSockets)
                             break

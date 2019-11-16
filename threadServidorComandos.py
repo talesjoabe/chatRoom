@@ -16,11 +16,12 @@ from functions import *
 # define uma classe para a criacao de threads
 class threadServidorComandos (threading.Thread):
     # redefine a funcao __init__ para aceitar a passagem parametros de entrada
-    def __init__(self, clients, listaSockets, serverSocket):
+    def __init__(self, clients, listaSockets, serverSocket, usernameList):
         threading.Thread.__init__(self)
         self.clients = clients
         self.listaSockets = listaSockets
         self.serverSocket = serverSocket
+        self.usernameList = usernameList
 
     # a funcao run() e executada por padrao por cada thread
     def run(self):
